@@ -13,7 +13,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader =
                 new FXMLLoader(
                         getClass().getResource(
-                                "/view/Login.fxml"
+                                "/view/Usuarios.fxml"
                         )
                 );
 

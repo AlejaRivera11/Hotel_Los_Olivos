@@ -1,0 +1,99 @@
+/*CONTENEDORES*/
+.overlay-oscuro {
+    -fx-background-color: rgba(0,0,0,0.35);
+}
+
+.contenedor-principal {
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+/*PANEL IZQUIERDO (MARCA)*/
+.panel-marca {
+    -fx-padding: 30;
+}
+
+.texto-marca {
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0);
+}
+
+.titulo-marca {
+    -fx-font-size: 80px;
+    -fx-font-weight: bold;
+    -fx-text-overrun: clip;
+}
+
+.eslogan-marca {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: top-left;
+}
+
+/*TARJETA DE LOGIN*/
+.tarjeta-login {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 40;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0);
+}
+
+.logo-login {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 0);
+}
+
+/*TEXTOS*/
+.titulo-bienvenida {
+    -fx-text-fill: #1B4332;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.33), 10, 0, 0, 0);
+}
+
+.texto-subtitulo {
+    -fx-text-fill: #6C757D;
+    -fx-font-size: 14px;
+}
+
+.mensaje-error {
+    -fx-text-fill: #D62828;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-content-display: center;
+}
+
+/*CAMPOS*/
+.campo-login {
+    -fx-background-radius: 10;
+    -fx-focus-color: #2D6A4F;
+    -fx-faint-focus-color: transparent;
+    -fx-padding: 0 12 0 44;
+    -fx-font-size: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.33), 10, 0, 0, 0);
+}
+
+/*BOTÓN*/
+.btn-login {
+    -fx-background-color: #2D6A4F;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-graphic-text-gap: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.33), 10, 0, 0, 0);
+}
+
+.btn-login:hover {
+    -fx-background-color: #1B4332;
+    -fx-cursor: hand;
+}
+
+/*ÍCONOS*/
+.icono-campo {
+     -fx-icon-color: #2D5A43;
+}
+
+.btn-login .ikonli-font-icon {
+    -fx-icon-color: white;
+}

@@ -16,18 +16,14 @@ public class LoginController {
 
     @FXML
     private TextField txtUsuario;
-
     @FXML
     private PasswordField txtContrasena;
-
     @FXML
     private Label lblMensaje;
 
     @FXML
     public void initialize() {
-
         lblMensaje.setText("");
-
     }
 
     @FXML
@@ -35,13 +31,11 @@ public class LoginController {
 
         if (txtUsuario.getText().isBlank()
                 || txtContrasena.getText().isBlank()) {
-
             lblMensaje.setText("Debe ingresar usuario y contraseña");
             return;
         }
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-
         Usuario usuarioSistema = usuarioDAO.buscarPorUsuario(txtUsuario.getText());
 
         if (usuarioSistema == null) {
@@ -50,43 +44,31 @@ public class LoginController {
         }
 
         if (usuarioSistema.getEstado().equalsIgnoreCase("Inactivo")) {
-
             lblMensaje.setText("Usuario Inactivo. Contacte al administrador.");
             return;
         }
 
-        Usuario usuario = usuarioDAO.iniciarSesion(
-                        txtUsuario.getText(),
-                        txtContrasena.getText()
-                );
+        Usuario usuario = usuarioDAO.iniciarSesion(txtUsuario.getText(), txtContrasena.getText());
 
         if (usuario == null) {
             lblMensaje.setText("Usuario o contraseña incorrectos");
             return;
         }
-
         lblMensaje.setText("");
-
         try {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Dashboard.fxml"));
-
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Dashboard");
             stage.show();
             Stage loginStage =
-                    (Stage) txtUsuario
-                            .getScene()
-                            .getWindow();
-
+                    (Stage) txtUsuario.getScene().getWindow();
             loginStage.close();
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
     }
 }
