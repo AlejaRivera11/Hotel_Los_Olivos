@@ -174,8 +174,17 @@
 }
 
 /*MENSAJE*/
-.mensaje {
+.mensaje-error {
+
     -fx-text-fill: #D62828;
+
+    -fx-font-weight: bold;
+}
+
+.mensaje-exito {
+
+    -fx-text-fill: #2D6A4F;
+
     -fx-font-weight: bold;
 }
 
