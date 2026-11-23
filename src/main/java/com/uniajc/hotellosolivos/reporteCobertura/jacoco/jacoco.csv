@@ -1,0 +1,15 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+HotelLosOlivos,com.uniajc.hotellosolivos.database,ConexionBD,23,41,1,3,10,11,2,3,1,2
+HotelLosOlivos,com.uniajc.hotellosolivos,Main,30,0,0,0,11,0,3,0,3,0
+HotelLosOlivos,com.uniajc.hotellosolivos.controller,LoginController,110,0,10,0,33,0,8,0,3,0
+HotelLosOlivos,com.uniajc.hotellosolivos.controller,HabitacionesController,222,0,16,0,76,0,18,0,10,0
+HotelLosOlivos,com.uniajc.hotellosolivos.controller,HuespedesController,405,0,38,0,132,0,31,0,12,0
+HotelLosOlivos,com.uniajc.hotellosolivos.controller,DashboardController,55,0,0,0,22,0,5,0,5,0
+HotelLosOlivos,com.uniajc.hotellosolivos.controller,UsuariosController,427,0,42,0,101,0,33,0,12,0
+HotelLosOlivos,com.uniajc.hotellosolivos.util,SeguridadUtil,3,8,0,0,1,2,1,2,1,2
+HotelLosOlivos,com.uniajc.hotellosolivos.dao,UsuarioDAO,21,266,2,10,12,71,2,10,0,6
+HotelLosOlivos,com.uniajc.hotellosolivos.dao,HabitacionDAO,8,73,0,4,5,29,0,5,0,3
+HotelLosOlivos,com.uniajc.hotellosolivos.dao,HuespedDAO,17,204,1,7,10,82,1,8,0,5
+HotelLosOlivos,com.uniajc.hotellosolivos.model,Huesped,0,45,0,0,0,20,0,13,0,13
+HotelLosOlivos,com.uniajc.hotellosolivos.model,Habitacion,0,24,0,0,0,11,0,7,0,7
+HotelLosOlivos,com.uniajc.hotellosolivos.model,Usuario,21,45,0,0,8,20,1,13,1,13

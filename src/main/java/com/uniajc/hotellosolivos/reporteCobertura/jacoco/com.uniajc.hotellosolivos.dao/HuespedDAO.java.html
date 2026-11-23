@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HuespedDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelLosOlivos</a> &gt; <a href="index.source.html" class="el_package">com.uniajc.hotellosolivos.dao</a> &gt; <span class="el_source">HuespedDAO.java</span></div><h1>HuespedDAO.java</h1><pre class="source lang-java linenums">package com.uniajc.hotellosolivos.dao;
+
+import com.uniajc.hotellosolivos.database.ConexionBD;
+import com.uniajc.hotellosolivos.model.Huesped;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+<span class="fc" id="L11">public class HuespedDAO {</span>
+
+    public ArrayList&lt;Huesped&gt; listarHuespedes() {
+
+<span class="fc" id="L15">        ArrayList&lt;Huesped&gt; huespedes =</span>
+                new ArrayList&lt;&gt;();
+
+<span class="fc" id="L18">        String sql = &quot;&quot;&quot;</span>
+                SELECT *
+                FROM huespedes
+                ORDER BY nombre
+                &quot;&quot;&quot;;
+
+        try {
+
+            Connection connection =
+<span class="fc" id="L27">                    ConexionBD.getConnection();</span>
+
+<span class="fc" id="L29">            PreparedStatement ps =</span>
+<span class="fc" id="L30">                    connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L32">            ResultSet rs =</span>
+<span class="fc" id="L33">                    ps.executeQuery();</span>
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            while (rs.next()) {</span>
+
+<span class="fc" id="L37">                Huesped huesped =</span>
+                        new Huesped();
+
+<span class="fc" id="L40">                huesped.setHuespedId(</span>
+<span class="fc" id="L41">                        rs.getInt(&quot;huesped_id&quot;)</span>
+                );
+
+<span class="fc" id="L44">                huesped.setCedula(</span>
+<span class="fc" id="L45">                        rs.getString(&quot;cedula&quot;)</span>
+                );
+
+<span class="fc" id="L48">                huesped.setNombre(</span>
+<span class="fc" id="L49">                        rs.getString(&quot;nombre&quot;)</span>
+                );
+
+<span class="fc" id="L52">                huesped.setTelefono(</span>
+<span class="fc" id="L53">                        rs.getString(&quot;telefono&quot;)</span>
+                );
+
+<span class="fc" id="L56">                huesped.setTipoHuesped(</span>
+<span class="fc" id="L57">                        rs.getString(&quot;tipo_huesped&quot;)</span>
+                );
+
+<span class="fc" id="L60">                huesped.setEstado(</span>
+<span class="fc" id="L61">                        rs.getString(&quot;estado&quot;)</span>
+                );
+
+<span class="fc" id="L64">                huespedes.add(huesped);</span>
+<span class="fc" id="L65">            }</span>
+
+<span class="nc" id="L67">        } catch (Exception e) {</span>
+
+<span class="nc" id="L69">            e.printStackTrace();</span>
+
+<span class="fc" id="L71">        }</span>
+
+<span class="fc" id="L73">        return huespedes;</span>
+    }
+
+    public boolean guardarHuesped(Huesped huesped) {
+
+<span class="fc" id="L78">        String sql = &quot;&quot;&quot;</span>
+            INSERT INTO huespedes
+            (
+                cedula,
+                nombre,
+                telefono,
+                tipo_huesped,
+                estado
+            )
+            VALUES
+            (
+                ?, ?, ?, ?, ?
+            )
+            &quot;&quot;&quot;;
+
+        try {
+
+            Connection connection =
+<span class="fc" id="L96">                    ConexionBD.getConnection();</span>
+
+<span class="fc" id="L98">            PreparedStatement ps =</span>
+<span class="fc" id="L99">                    connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L101">            ps.setString(</span>
+                    1,
+<span class="fc" id="L103">                    huesped.getCedula()</span>
+            );
+
+<span class="fc" id="L106">            ps.setString(</span>
+                    2,
+<span class="fc" id="L108">                    huesped.getNombre()</span>
+            );
+
+<span class="fc" id="L111">            ps.setString(</span>
+                    3,
+<span class="fc" id="L113">                    huesped.getTelefono()</span>
+            );
+
+<span class="fc" id="L116">            ps.setString(</span>
+                    4,
+<span class="fc" id="L118">                    huesped.getTipoHuesped()</span>
+            );
+
+<span class="fc" id="L121">            ps.setString(</span>
+                    5,
+<span class="fc" id="L123">                    huesped.getEstado()</span>
+            );
+
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            return ps.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L128">        } catch (Exception e) {</span>
+
+<span class="nc" id="L130">            e.printStackTrace();</span>
+
+        }
+
+<span class="nc" id="L134">        return false;</span>
+    }
+
+    public boolean actualizarHuesped(
+            Huesped huesped
+    ) {
+
+<span class="fc" id="L141">        String sql = &quot;&quot;&quot;</span>
+            UPDATE huespedes
+            SET
+                cedula = ?,
+                nombre = ?,
+                telefono = ?,
+                tipo_huesped = ?,
+                estado = ?
+            WHERE huesped_id = ?
+            &quot;&quot;&quot;;
+
+        try {
+
+            Connection connection =
+<span class="fc" id="L155">                    ConexionBD.getConnection();</span>
+
+<span class="fc" id="L157">            PreparedStatement ps =</span>
+<span class="fc" id="L158">                    connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L160">            ps.setString(</span>
+                    1,
+<span class="fc" id="L162">                    huesped.getCedula()</span>
+            );
+
+<span class="fc" id="L165">            ps.setString(</span>
+                    2,
+<span class="fc" id="L167">                    huesped.getNombre()</span>
+            );
+
+<span class="fc" id="L170">            ps.setString(</span>
+                    3,
+<span class="fc" id="L172">                    huesped.getTelefono()</span>
+            );
+
+<span class="fc" id="L175">            ps.setString(</span>
+                    4,
+<span class="fc" id="L177">                    huesped.getTipoHuesped()</span>
+            );
+
+<span class="fc" id="L180">            ps.setString(</span>
+                    5,
+<span class="fc" id="L182">                    huesped.getEstado()</span>
+            );
+
+<span class="fc" id="L185">            ps.setInt(</span>
+                    6,
+<span class="fc" id="L187">                    huesped.getHuespedId()</span>
+            );
+
+<span class="fc bfc" id="L190" title="All 2 branches covered.">            return ps.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L192">        } catch (Exception e) {</span>
+
+<span class="nc" id="L194">            e.printStackTrace();</span>
+
+        }
+
+<span class="nc" id="L198">        return false;</span>
+    }
+
+    public Huesped buscarPorCedula(String cedula) {
+
+<span class="fc" id="L203">        String sql = &quot;&quot;&quot;</span>
+            SELECT *
+            FROM huespedes
+            WHERE cedula = ?
+            &quot;&quot;&quot;;
+
+        try {
+
+            Connection connection =
+<span class="fc" id="L212">                    ConexionBD.getConnection();</span>
+
+<span class="fc" id="L214">            PreparedStatement ps =</span>
+<span class="fc" id="L215">                    connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L217">            ps.setString(</span>
+                    1,
+                    cedula
+            );
+
+<span class="fc" id="L222">            ResultSet rs =</span>
+<span class="fc" id="L223">                    ps.executeQuery();</span>
+
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            if (rs.next()) {</span>
+
+<span class="fc" id="L227">                Huesped huesped =</span>
+                        new Huesped();
+
+<span class="fc" id="L230">                huesped.setHuespedId(</span>
+<span class="fc" id="L231">                        rs.getInt(&quot;huesped_id&quot;)</span>
+                );
+
+<span class="fc" id="L234">                huesped.setCedula(</span>
+<span class="fc" id="L235">                        rs.getString(&quot;cedula&quot;)</span>
+                );
+
+<span class="fc" id="L238">                huesped.setNombre(</span>
+<span class="fc" id="L239">                        rs.getString(&quot;nombre&quot;)</span>
+                );
+
+<span class="fc" id="L242">                huesped.setTelefono(</span>
+<span class="fc" id="L243">                        rs.getString(&quot;telefono&quot;)</span>
+                );
+
+<span class="fc" id="L246">                huesped.setTipoHuesped(</span>
+<span class="fc" id="L247">                        rs.getString(&quot;tipo_huesped&quot;)</span>
+                );
+
+<span class="fc" id="L250">                huesped.setEstado(</span>
+<span class="fc" id="L251">                        rs.getString(&quot;estado&quot;)</span>
+                );
+
+<span class="fc" id="L254">                return huesped;</span>
+            }
+
+<span class="nc" id="L257">        } catch (Exception e) {</span>
+
+<span class="nc" id="L259">            e.printStackTrace();</span>
+
+<span class="fc" id="L261">        }</span>
+
+<span class="fc" id="L263">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

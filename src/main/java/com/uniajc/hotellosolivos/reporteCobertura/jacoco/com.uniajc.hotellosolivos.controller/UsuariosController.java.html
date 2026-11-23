@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuariosController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelLosOlivos</a> &gt; <a href="index.source.html" class="el_package">com.uniajc.hotellosolivos.controller</a> &gt; <span class="el_source">UsuariosController.java</span></div><h1>UsuariosController.java</h1><pre class="source lang-java linenums">package com.uniajc.hotellosolivos.controller;
+
+import com.uniajc.hotellosolivos.dao.UsuarioDAO;
+import com.uniajc.hotellosolivos.model.Usuario;
+
+import com.uniajc.hotellosolivos.util.SeguridadUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import java.util.Optional;
+
+<span class="nc" id="L14">public class UsuariosController {</span>
+
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private TextField txtUsuario;
+    @FXML
+    private PasswordField txtContrasena;
+    @FXML
+    private ComboBox&lt;String&gt; cbRol;
+    @FXML
+    private ComboBox&lt;String&gt; cbEstado;
+    @FXML
+    private TableView&lt;Usuario&gt; tblUsuarios;
+    @FXML
+    private TableColumn&lt;Usuario, String&gt; colNombre;
+    @FXML
+    private TableColumn&lt;Usuario, String&gt; colUsuario;
+    @FXML
+    private TableColumn&lt;Usuario, String&gt; colRol;
+    @FXML
+    private TableColumn&lt;Usuario, String&gt; colEstado;
+    @FXML
+    private Label lblMensaje;
+    private Usuario usuarioSeleccionado;
+
+<span class="nc" id="L40">    private final UsuarioDAO usuarioDAO =</span>
+            new UsuarioDAO();
+
+    @FXML
+    public void initialize() {
+
+<span class="nc" id="L46">        cargarCombos();</span>
+<span class="nc" id="L47">        configurarColumnas();</span>
+<span class="nc" id="L48">        cargarUsuarios();</span>
+<span class="nc" id="L49">        seleccionarUsuario();</span>
+
+<span class="nc" id="L51">    }</span>
+
+    private void cargarCombos() {
+
+<span class="nc" id="L55">        cbRol.getItems().addAll(&quot;Administrador&quot;, &quot;Empleado&quot;);</span>
+
+<span class="nc" id="L57">        cbEstado.getItems().addAll(&quot;Activo&quot;, &quot;Inactivo&quot;</span>
+        );
+<span class="nc" id="L59">    }</span>
+
+    private void configurarColumnas() {
+<span class="nc" id="L62">        colNombre.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;nombre&quot;));</span>
+<span class="nc" id="L63">        colUsuario.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;usuario&quot;));</span>
+<span class="nc" id="L64">        colRol.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;rol&quot;));</span>
+<span class="nc" id="L65">        colEstado.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;estado&quot;));</span>
+<span class="nc" id="L66">    }</span>
+
+    private void cargarUsuarios() {
+<span class="nc" id="L69">        ObservableList&lt;Usuario&gt; listaUsuarios = FXCollections.observableArrayList(usuarioDAO.listarUsuarios());</span>
+<span class="nc" id="L70">        tblUsuarios.setItems(listaUsuarios);</span>
+<span class="nc" id="L71">    }</span>
+
+    private void mostrarError(String mensaje) {
+<span class="nc" id="L74">        lblMensaje.getStyleClass().removeAll(&quot;mensaje-exito&quot;);</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (!lblMensaje.getStyleClass().contains(&quot;mensaje-error&quot;)) {</span>
+<span class="nc" id="L77">            lblMensaje.getStyleClass().add(&quot;mensaje-error&quot;);</span>
+        }
+<span class="nc" id="L79">        lblMensaje.setText(mensaje);</span>
+<span class="nc" id="L80">    }</span>
+
+    private void mostrarExito(String mensaje) {
+
+<span class="nc" id="L84">        lblMensaje.getStyleClass().removeAll(&quot;mensaje-error&quot;);</span>
+
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (!lblMensaje.getStyleClass().contains(&quot;mensaje-exito&quot;)) {</span>
+<span class="nc" id="L87">            lblMensaje.getStyleClass().add(&quot;mensaje-exito&quot;);</span>
+        }
+<span class="nc" id="L89">        lblMensaje.setText(mensaje);</span>
+<span class="nc" id="L90">    }</span>
+
+    @FXML
+    private void guardarUsuario() {
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (txtNombre.getText().isBlank()</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                || txtUsuario.getText().isBlank()</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                || txtContrasena.getText().isBlank()</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">                || cbRol.getValue() == null</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                || cbEstado.getValue() == null) {</span>
+
+<span class="nc" id="L101">            mostrarError(&quot;Debe completar todos los campos.&quot;);</span>
+
+<span class="nc" id="L103">            return;</span>
+        }
+
+<span class="nc" id="L106">        Usuario existente = usuarioDAO.buscarPorUsuario(txtUsuario.getText());</span>
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (existente != null) {</span>
+
+<span class="nc" id="L110">            mostrarError(&quot;El nombre de usuario ya existe.&quot;);</span>
+
+<span class="nc" id="L112">            return;</span>
+        }
+
+<span class="nc" id="L115">        Usuario usuario = new Usuario();</span>
+
+<span class="nc" id="L117">        usuario.setNombre(txtNombre.getText());</span>
+<span class="nc" id="L118">        usuario.setUsuario(txtUsuario.getText());</span>
+<span class="nc" id="L119">        usuario.setContrasena(SeguridadUtil.hashear(txtContrasena.getText()));</span>
+<span class="nc" id="L120">        usuario.setRol(cbRol.getValue());</span>
+<span class="nc" id="L121">        usuario.setEstado(cbEstado.getValue());</span>
+
+<span class="nc" id="L123">        boolean guardado = usuarioDAO.guardarUsuario(usuario);</span>
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (guardado) {</span>
+<span class="nc" id="L126">            mostrarExito(&quot;Usuario registrado correctamente.&quot;);</span>
+<span class="nc" id="L127">            cargarUsuarios();</span>
+
+        } else {
+<span class="nc" id="L130">            mostrarError(&quot;No fue posible registrar el usuario.&quot;);</span>
+        }
+<span class="nc" id="L132">    }</span>
+
+    private void seleccionarUsuario() {
+
+<span class="nc" id="L136">        tblUsuarios.getSelectionModel().selectedItemProperty().addListener(</span>
+                        (observable,
+                         valorAnterior,
+                         usuario) -&gt; {
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                            if (usuario != null) {</span>
+<span class="nc" id="L142">                                usuarioSeleccionado = usuario;</span>
+<span class="nc" id="L143">                                txtNombre.setText(usuario.getNombre());</span>
+<span class="nc" id="L144">                                txtUsuario.setText(usuario.getUsuario());</span>
+<span class="nc" id="L145">                                txtContrasena.setText(usuario.getContrasena());</span>
+<span class="nc" id="L146">                                cbRol.setValue(usuario.getRol());</span>
+<span class="nc" id="L147">                                cbEstado.setValue(usuario.getEstado());</span>
+                            }
+<span class="nc" id="L149">                        }</span>
+                );
+<span class="nc" id="L151">    }</span>
+
+    @FXML
+    private void actualizarUsuario() {
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (usuarioSeleccionado == null) {</span>
+<span class="nc" id="L157">            mostrarError(&quot;Debe seleccionar un usuario.&quot;);</span>
+<span class="nc" id="L158">            return;</span>
+        }
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        if (txtNombre.getText().isBlank()</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                || txtUsuario.getText().isBlank()</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                || cbRol.getValue() == null</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                || cbEstado.getValue() == null) {</span>
+
+<span class="nc" id="L166">            mostrarError(&quot;Debe completar todos los campos.&quot;);</span>
+<span class="nc" id="L167">            return;</span>
+        }
+
+<span class="nc" id="L170">        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);</span>
+
+<span class="nc" id="L172">        alert.setTitle(&quot;Confirmación&quot;);</span>
+<span class="nc" id="L173">        alert.setHeaderText(null);</span>
+<span class="nc" id="L174">        alert.setContentText(&quot;¿Desea actualizar este usuario?&quot;);</span>
+<span class="nc" id="L175">        Optional&lt;ButtonType&gt; resultado = alert.showAndWait();</span>
+
+<span class="nc bnc" id="L177" title="All 4 branches missed.">        if (resultado.isEmpty() || resultado.get() != ButtonType.OK) {</span>
+<span class="nc" id="L178">            return;</span>
+        }
+
+<span class="nc bnc" id="L181" title="All 4 branches missed.">        if (usuarioSeleccionado.getUsuario().equals(&quot;admin&quot;) &amp;&amp; cbEstado.getValue().equals(&quot;Inactivo&quot;)) {</span>
+<span class="nc" id="L182">            mostrarError(&quot;No es posible desactivar el administrador principal.&quot;);</span>
+<span class="nc" id="L183">            return;</span>
+        }
+
+<span class="nc" id="L186">        usuarioSeleccionado.setNombre(txtNombre.getText());</span>
+<span class="nc" id="L187">        usuarioSeleccionado.setUsuario(txtUsuario.getText());</span>
+
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (!txtContrasena.getText().isBlank()) {</span>
+<span class="nc" id="L190">            usuarioSeleccionado.setContrasena(SeguridadUtil.hashear(txtContrasena.getText()));</span>
+        }
+
+<span class="nc" id="L193">        usuarioSeleccionado.setRol(cbRol.getValue());</span>
+<span class="nc" id="L194">        usuarioSeleccionado.setEstado(cbEstado.getValue());</span>
+
+<span class="nc" id="L196">        boolean actualizado = usuarioDAO.actualizarUsuario(usuarioSeleccionado);</span>
+
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (actualizado) {</span>
+<span class="nc" id="L199">            mostrarExito(&quot;Usuario actualizado correctamente.&quot;);</span>
+<span class="nc" id="L200">            cargarUsuarios();</span>
+        } else {
+<span class="nc" id="L202">            mostrarError(&quot;No fue posible actualizar el usuario.&quot;);</span>
+        }
+<span class="nc" id="L204">    }</span>
+
+    @FXML
+    private void limpiarFormulario() {
+
+<span class="nc" id="L209">        txtNombre.clear();</span>
+<span class="nc" id="L210">        txtUsuario.clear();</span>
+<span class="nc" id="L211">        txtContrasena.clear();</span>
+<span class="nc" id="L212">        cbRol.setValue(null);</span>
+<span class="nc" id="L213">        cbEstado.setValue(null);</span>
+<span class="nc" id="L214">        usuarioSeleccionado = null;</span>
+<span class="nc" id="L215">        tblUsuarios.getSelectionModel().clearSelection();</span>
+<span class="nc" id="L216">        lblMensaje.setText(&quot;&quot;);</span>
+
+<span class="nc" id="L218">    }</span>
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

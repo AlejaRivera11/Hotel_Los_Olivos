@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HabitacionDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelLosOlivos</a> &gt; <a href="index.source.html" class="el_package">com.uniajc.hotellosolivos.dao</a> &gt; <span class="el_source">HabitacionDAO.java</span></div><h1>HabitacionDAO.java</h1><pre class="source lang-java linenums">package com.uniajc.hotellosolivos.dao;
+
+import com.uniajc.hotellosolivos.database.ConexionBD;
+import com.uniajc.hotellosolivos.model.Habitacion;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+<span class="fc" id="L11">public class HabitacionDAO {</span>
+
+    public ArrayList&lt;Habitacion&gt; listarHabitaciones() {
+
+<span class="fc" id="L15">        ArrayList&lt;Habitacion&gt; habitaciones =</span>
+                new ArrayList&lt;&gt;();
+
+<span class="fc" id="L18">        String sql = &quot;&quot;&quot;</span>
+                SELECT *
+                FROM habitaciones
+                ORDER BY numero
+                &quot;&quot;&quot;;
+
+        try {
+
+            Connection connection =
+<span class="fc" id="L27">                    ConexionBD.getConnection();</span>
+
+<span class="fc" id="L29">            PreparedStatement ps =</span>
+<span class="fc" id="L30">                    connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L32">            ResultSet rs =</span>
+<span class="fc" id="L33">                    ps.executeQuery();</span>
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            while (rs.next()) {</span>
+
+<span class="fc" id="L37">                Habitacion habitacion =</span>
+                        new Habitacion();
+
+<span class="fc" id="L40">                habitacion.setHabitacionId(</span>
+<span class="fc" id="L41">                        rs.getInt(&quot;habitacion_id&quot;)</span>
+                );
+
+<span class="fc" id="L44">                habitacion.setNumero(</span>
+<span class="fc" id="L45">                        rs.getInt(&quot;numero&quot;)</span>
+                );
+
+<span class="fc" id="L48">                habitacion.setEstado(</span>
+<span class="fc" id="L49">                        rs.getString(&quot;estado&quot;)</span>
+                );
+
+<span class="fc" id="L52">                habitaciones.add(</span>
+                        habitacion
+                );
+<span class="fc" id="L55">            }</span>
+
+<span class="nc" id="L57">        } catch (Exception e) {</span>
+
+<span class="nc" id="L59">            e.printStackTrace();</span>
+
+<span class="fc" id="L61">        }</span>
+
+<span class="fc" id="L63">        return habitaciones;</span>
+    }
+
+    public boolean actualizarEstado(
+            Habitacion habitacion
+    ) {
+
+<span class="fc" id="L70">        String sql = &quot;&quot;&quot;</span>
+            UPDATE habitaciones
+            SET estado = ?
+            WHERE habitacion_id = ?
+            &quot;&quot;&quot;;
+
+        try {
+
+            Connection connection =
+<span class="fc" id="L79">                    ConexionBD.getConnection();</span>
+
+<span class="fc" id="L81">            PreparedStatement ps =</span>
+<span class="fc" id="L82">                    connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L84">            ps.setString(</span>
+                    1,
+<span class="fc" id="L86">                    habitacion.getEstado()</span>
+            );
+
+<span class="fc" id="L89">            ps.setInt(</span>
+                    2,
+<span class="fc" id="L91">                    habitacion.getHabitacionId()</span>
+            );
+
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            return ps.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L96">        } catch (Exception e) {</span>
+
+<span class="nc" id="L98">            e.printStackTrace();</span>
+
+        }
+
+<span class="nc" id="L102">        return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

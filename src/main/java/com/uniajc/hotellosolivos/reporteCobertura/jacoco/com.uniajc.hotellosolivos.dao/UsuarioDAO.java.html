@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuarioDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelLosOlivos</a> &gt; <a href="index.source.html" class="el_package">com.uniajc.hotellosolivos.dao</a> &gt; <span class="el_source">UsuarioDAO.java</span></div><h1>UsuarioDAO.java</h1><pre class="source lang-java linenums">package com.uniajc.hotellosolivos.dao;
+
+import com.uniajc.hotellosolivos.database.ConexionBD;
+import com.uniajc.hotellosolivos.model.Usuario;
+import com.uniajc.hotellosolivos.util.SeguridadUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+<span class="fc" id="L12">public class UsuarioDAO {</span>
+
+    public Usuario iniciarSesion(String usuario, String contrasena) {
+
+<span class="fc" id="L16">        String sql = &quot;&quot;&quot;</span>
+            SELECT *
+            FROM usuarios
+            WHERE usuario = ?
+            AND estado = 'Activo'
+            &quot;&quot;&quot;;
+
+        try {
+
+<span class="fc" id="L25">            Connection connection = ConexionBD.getConnection();</span>
+<span class="fc" id="L26">            PreparedStatement ps = connection.prepareStatement(sql);</span>
+<span class="fc" id="L27">            ps.setString(1, usuario);</span>
+
+<span class="fc" id="L29">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L31" title="All 2 branches covered.">            if (rs.next()) {</span>
+
+<span class="fc" id="L33">                String hashGuardado = rs.getString(&quot;contrasena&quot;);</span>
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                if (SeguridadUtil.verificar(contrasena, hashGuardado)) {</span>
+
+<span class="fc" id="L37">                    Usuario user = new Usuario();</span>
+<span class="fc" id="L38">                    user.setUsuarioId(rs.getInt(&quot;usuario_id&quot;));</span>
+<span class="fc" id="L39">                    user.setNombre(rs.getString(&quot;nombre&quot;));</span>
+<span class="fc" id="L40">                    user.setUsuario(rs.getString(&quot;usuario&quot;));</span>
+<span class="fc" id="L41">                    user.setContrasena(hashGuardado);</span>
+<span class="fc" id="L42">                    user.setRol(rs.getString(&quot;rol&quot;));</span>
+<span class="fc" id="L43">                    user.setEstado(rs.getString(&quot;estado&quot;));</span>
+<span class="fc" id="L44">                    return user;</span>
+                }
+            }
+
+<span class="nc" id="L48">        } catch (Exception e) {</span>
+<span class="nc" id="L49">            e.printStackTrace();</span>
+<span class="fc" id="L50">        }</span>
+<span class="fc" id="L51">        return null;</span>
+    }
+
+    public Usuario buscarPorUsuario(String usuario) {
+
+<span class="fc" id="L56">        String sql = &quot;&quot;&quot;</span>
+                SELECT *
+                FROM usuarios
+                WHERE usuario = ?
+                &quot;&quot;&quot;;
+        try {
+<span class="fc" id="L62">            Connection connection = ConexionBD.getConnection();</span>
+<span class="fc" id="L63">            PreparedStatement ps = connection.prepareStatement(sql);</span>
+<span class="fc" id="L64">            ps.setString(1, usuario);</span>
+<span class="fc" id="L65">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (rs.next()) {</span>
+
+<span class="fc" id="L69">                Usuario user = new Usuario();</span>
+<span class="fc" id="L70">                user.setUsuarioId(rs.getInt(&quot;usuario_id&quot;));</span>
+<span class="fc" id="L71">                user.setNombre(rs.getString(&quot;nombre&quot;));</span>
+<span class="fc" id="L72">                user.setUsuario(rs.getString(&quot;usuario&quot;));</span>
+<span class="fc" id="L73">                user.setContrasena(rs.getString(&quot;contrasena&quot;));</span>
+<span class="fc" id="L74">                user.setRol(rs.getString(&quot;rol&quot;));</span>
+<span class="fc" id="L75">                user.setEstado(rs.getString(&quot;estado&quot;));</span>
+<span class="fc" id="L76">                return user;</span>
+            }
+
+<span class="nc" id="L79">        } catch (Exception e) {</span>
+<span class="nc" id="L80">            e.printStackTrace();</span>
+<span class="fc" id="L81">        }</span>
+<span class="fc" id="L82">        return null;</span>
+    }
+
+    public ArrayList&lt;Usuario&gt; listarUsuarios() {
+
+<span class="fc" id="L87">        ArrayList&lt;Usuario&gt; usuarios =</span>
+                new ArrayList&lt;&gt;();
+
+<span class="fc" id="L90">        String sql = &quot;&quot;&quot;</span>
+            SELECT *
+            FROM usuarios
+            ORDER BY usuario_id
+            &quot;&quot;&quot;;
+
+        try {
+
+<span class="fc" id="L98">            Connection connection = ConexionBD.getConnection();</span>
+<span class="fc" id="L99">            PreparedStatement ps = connection.prepareStatement(sql);</span>
+<span class="fc" id="L100">            ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            while (rs.next()) {</span>
+
+<span class="fc" id="L104">                Usuario usuario = new Usuario();</span>
+<span class="fc" id="L105">                usuario.setUsuarioId(rs.getInt(&quot;usuario_id&quot;));</span>
+<span class="fc" id="L106">                usuario.setNombre(rs.getString(&quot;nombre&quot;));</span>
+<span class="fc" id="L107">                usuario.setUsuario(rs.getString(&quot;usuario&quot;));</span>
+<span class="fc" id="L108">                usuario.setContrasena(rs.getString(&quot;contrasena&quot;));</span>
+<span class="fc" id="L109">                usuario.setRol(rs.getString(&quot;rol&quot;));</span>
+<span class="fc" id="L110">                usuario.setEstado(rs.getString(&quot;estado&quot;));</span>
+<span class="fc" id="L111">                usuarios.add(usuario);</span>
+<span class="fc" id="L112">            }</span>
+
+<span class="nc" id="L114">        } catch (Exception e) {</span>
+<span class="nc" id="L115">            e.printStackTrace();</span>
+<span class="fc" id="L116">        }</span>
+
+<span class="fc" id="L118">        return usuarios;</span>
+    }
+
+    public boolean guardarUsuario(Usuario usuario) {
+
+<span class="fc" id="L123">        String sql = &quot;&quot;&quot;</span>
+            INSERT INTO usuarios
+            (
+                nombre,
+                usuario,
+                contrasena,
+                rol,
+                estado
+            )
+            VALUES
+            (
+                ?, ?, ?, ?, ?
+            )
+            &quot;&quot;&quot;;
+
+        try {
+
+<span class="fc" id="L140">            Connection connection = ConexionBD.getConnection();</span>
+<span class="fc" id="L141">            PreparedStatement ps = connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L143">            ps.setString(1, usuario.getNombre());</span>
+<span class="fc" id="L144">            ps.setString(2, usuario.getUsuario());</span>
+<span class="fc" id="L145">            ps.setString(3, usuario.getContrasena());</span>
+<span class="fc" id="L146">            ps.setString(4, usuario.getRol());</span>
+<span class="fc" id="L147">            ps.setString(5, usuario.getEstado());</span>
+
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">            return ps.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L151">        } catch (Exception e) {</span>
+
+<span class="nc" id="L153">            e.printStackTrace();</span>
+
+        }
+
+<span class="nc" id="L157">        return false;</span>
+    }
+
+    public boolean actualizarUsuario(Usuario usuario) {
+
+<span class="fc" id="L162">        String sql = &quot;&quot;&quot;</span>
+            UPDATE usuarios
+            SET
+                nombre = ?,
+                usuario = ?,
+                contrasena = ?,
+                rol = ?,
+                estado = ?
+            WHERE usuario_id = ?
+            &quot;&quot;&quot;;
+
+        try {
+
+<span class="fc" id="L175">            Connection connection = ConexionBD.getConnection();</span>
+<span class="fc" id="L176">            PreparedStatement ps = connection.prepareStatement(sql);</span>
+
+<span class="fc" id="L178">            ps.setString(1, usuario.getNombre());</span>
+<span class="fc" id="L179">            ps.setString(2, usuario.getUsuario());</span>
+<span class="fc" id="L180">            ps.setString(3, usuario.getContrasena());</span>
+<span class="fc" id="L181">            ps.setString(4, usuario.getRol());</span>
+<span class="fc" id="L182">            ps.setString(5, usuario.getEstado());</span>
+<span class="fc" id="L183">            ps.setInt(6, usuario.getUsuarioId());</span>
+
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">            return ps.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L187">        } catch (Exception e) {</span>
+
+<span class="nc" id="L189">            e.printStackTrace();</span>
+
+        }
+
+<span class="nc" id="L193">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
