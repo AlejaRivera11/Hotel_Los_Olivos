@@ -48,32 +48,16 @@ public class DashboardController {
 
         try {
 
-            FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(
-                                    "/view/Login.fxml"
-                            )
-                    );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
 
             Parent root = loader.load();
-
             Stage stage = new Stage();
+            stage.setScene(new Scene(root));
 
-            stage.setScene(
-                    new Scene(root)
-            );
-
-            stage.setTitle(
-                    "Inicio de Sesión"
-            );
-
+            stage.setTitle("Inicio de Sesión");
             stage.show();
 
-            Stage dashboardStage =
-                    (Stage) btnCerrarSesion
-                            .getScene()
-                            .getWindow();
-
+            Stage dashboardStage = (Stage) btnCerrarSesion.getScene().getWindow();
             dashboardStage.close();
 
         } catch (Exception e) {

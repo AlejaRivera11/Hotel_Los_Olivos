@@ -62,13 +62,8 @@ public class HabitacionesController {
 
     private void configurarColumnas() {
 
-        colNumero.setCellValueFactory(
-                new PropertyValueFactory<>("numero")
-        );
-
-        colEstado.setCellValueFactory(
-                new PropertyValueFactory<>("estado")
-        );
+        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
     }
 
@@ -77,10 +72,7 @@ public class HabitacionesController {
         HabitacionDAO habitacionDAO =
                 new HabitacionDAO();
 
-        ObservableList<Habitacion> lista =
-                FXCollections.observableArrayList(
-                        habitacionDAO.listarHabitaciones()
-                );
+        ObservableList<Habitacion> lista = FXCollections.observableArrayList(habitacionDAO.listarHabitaciones());
 
         tblHabitaciones.setItems(lista);
 
@@ -97,18 +89,9 @@ public class HabitacionesController {
 
                             if (habitacion != null) {
 
-                                habitacionSeleccionada =
-                                        habitacion;
-
-                                txtNumero.setText(
-                                        String.valueOf(
-                                                habitacion.getNumero()
-                                        )
-                                );
-
-                                cbEstado.setValue(
-                                        habitacion.getEstado()
-                                );
+                                habitacionSeleccionada = habitacion;
+                                txtNumero.setText(String.valueOf(habitacion.getNumero()));
+                                cbEstado.setValue(habitacion.getEstado());
 
                             }
 
@@ -119,38 +102,28 @@ public class HabitacionesController {
 
     private void mostrarError(String mensaje) {
 
-        lblMensaje.getStyleClass()
-                .remove("mensaje-exito");
+        lblMensaje.getStyleClass().remove("mensaje-exito");
 
-        if (!lblMensaje.getStyleClass()
-                .contains("mensaje-error")) {
+        if (!lblMensaje.getStyleClass().contains("mensaje-error")) {
 
-            lblMensaje.getStyleClass()
-                    .add("mensaje-error");
+            lblMensaje.getStyleClass().add("mensaje-error");
 
         }
 
-        lblMensaje.setText(
-                mensaje
-        );
+        lblMensaje.setText(mensaje);
     }
 
     private void mostrarExito(String mensaje) {
 
-        lblMensaje.getStyleClass()
-                .remove("mensaje-error");
+        lblMensaje.getStyleClass().remove("mensaje-error");
 
-        if (!lblMensaje.getStyleClass()
-                .contains("mensaje-exito")) {
+        if (!lblMensaje.getStyleClass().contains("mensaje-exito")) {
 
-            lblMensaje.getStyleClass()
-                    .add("mensaje-exito");
+            lblMensaje.getStyleClass().add("mensaje-exito");
 
         }
 
-        lblMensaje.setText(
-                mensaje
-        );
+        lblMensaje.setText(mensaje);
     }
 
     @FXML
@@ -158,80 +131,55 @@ public class HabitacionesController {
 
         if (habitacionSeleccionada == null) {
 
-            mostrarError(
-                    "Debe seleccionar una habitación."
-            );
+            mostrarError("Debe seleccionar una habitación.");
 
             return;
         }
 
         if (cbEstado.getValue() == null) {
 
-            mostrarError(
-                    "Debe seleccionar un estado."
-            );
+            mostrarError("Debe seleccionar un estado.");
 
             return;
         }
 
-        Alert alert = new Alert(
-                Alert.AlertType.CONFIRMATION
-        );
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        alert.setTitle(
-                "Confirmación"
-        );
+        alert.setTitle("Confirmación");
 
-        alert.setHeaderText(
-                null
-        );
+        alert.setHeaderText(null);
 
-        alert.setContentText(
-                "¿Desea actualizar el estado de la habitación "
+        alert.setContentText("¿Desea actualizar el estado de la habitación "
                         + habitacionSeleccionada.getNumero()
                         + "?"
         );
 
-        Optional<ButtonType> resultado =
-                alert.showAndWait();
+        Optional<ButtonType> resultado = alert.showAndWait();
 
-        if (resultado.isEmpty()
-                || resultado.get() != ButtonType.OK) {
+        if (resultado.isEmpty() || resultado.get() != ButtonType.OK) {
 
             return;
         }
 
-        habitacionSeleccionada.setEstado(
-                cbEstado.getValue()
-        );
+        habitacionSeleccionada.setEstado(cbEstado.getValue());
 
         boolean actualizado =
-                habitacionDAO.actualizarEstado(
-                        habitacionSeleccionada
-                );
+                habitacionDAO.actualizarEstado(habitacionSeleccionada);
 
         if (actualizado) {
 
-            mostrarExito(
-                    "Estado actualizado correctamente."
-            );
+            mostrarExito("Estado actualizado correctamente.");
 
             cargarHabitaciones();
 
-            tblHabitaciones.getSelectionModel()
-                    .clearSelection();
-
+            tblHabitaciones.getSelectionModel().clearSelection();
             txtNumero.clear();
-
             cbEstado.setValue(null);
-
             habitacionSeleccionada = null;
 
         } else {
 
-            mostrarError(
-                    "No fue posible actualizar el estado."
-            );
+            mostrarError("No fue posible actualizar el estado.");
 
         }
 

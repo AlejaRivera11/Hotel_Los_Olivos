@@ -22,7 +22,6 @@
         <URL value="@/css/Habitaciones.css"/>
     </stylesheets>
 
-    <!-- MENÚ LATERAL -->
     <left>
         <VBox prefWidth="260.0" spacing="8" styleClass="menu-lateral">
 
@@ -60,7 +59,6 @@
         </VBox>
     </left>
 
-    <!-- BARRA SUPERIOR -->
     <top>
         <HBox spacing="5" styleClass="barra-superior">
             <Label styleClass="avatar">
@@ -72,11 +70,10 @@
         </HBox>
     </top>
 
-    <!-- CONTENIDO CENTRAL -->
     <center>
         <VBox spacing="20" styleClass="contenido-central">
 
-            <!-- TÍTULO -->
+
             <HBox spacing="16" styleClass="encabezado">
                 <FontIcon iconLiteral="fas-bed" styleClass="icono-titulo"/>
                 <VBox spacing="2">
@@ -85,7 +82,7 @@
                 </VBox>
             </HBox>
 
-            <!-- TARJETA CAMBIAR ESTADO -->
+
             <VBox spacing="15" styleClass="tarjeta">
                 <HBox spacing="15" styleClass="fila-formulario">
                     <VBox spacing="8">
@@ -108,7 +105,7 @@
                 <Label fx:id="lblMensaje" styleClass="mensaje"/>
             </VBox>
 
-            <!-- TARJETA TABLA -->
+
             <VBox spacing="16" styleClass="tarjeta" VBox.vgrow="ALWAYS">
                 <HBox spacing="10" styleClass="encabezado">
                     <FontIcon iconLiteral="fas-bed" styleClass="icono-tarjeta"/>

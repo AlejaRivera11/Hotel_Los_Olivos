@@ -2,6 +2,7 @@ package com.uniajc.hotellosolivos.dao;
 
 import com.uniajc.hotellosolivos.database.ConexionBD;
 import com.uniajc.hotellosolivos.model.Usuario;
+import com.uniajc.hotellosolivos.util.SeguridadUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,38 +11,38 @@ import java.util.ArrayList;
 
 public class UsuarioDAO {
 
-    public Usuario iniciarSesion(
-            String usuario,
-            String contrasena
-    ) {
+    public Usuario iniciarSesion(String usuario, String contrasena) {
 
         String sql = """
-                SELECT *
-                FROM usuarios
-                WHERE usuario = ?
-                AND contrasena = ?
-                AND estado = 'Activo'
-                """;
+            SELECT *
+            FROM usuarios
+            WHERE usuario = ?
+            AND estado = 'Activo'
+            """;
 
         try {
 
             Connection connection = ConexionBD.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, usuario);
-            ps.setString(2, contrasena);
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
 
-                Usuario user = new Usuario();
-                user.setUsuarioId(rs.getInt("usuario_id"));
-                user.setNombre(rs.getString("nombre"));
-                user.setUsuario(rs.getString("usuario"));
-                user.setContrasena(rs.getString("contrasena"));
-                user.setRol(rs.getString("rol"));
-                user.setEstado(rs.getString("estado"));
-                return user;
+                String hashGuardado = rs.getString("contrasena");
+
+                if (SeguridadUtil.verificar(contrasena, hashGuardado)) {
+
+                    Usuario user = new Usuario();
+                    user.setUsuarioId(rs.getInt("usuario_id"));
+                    user.setNombre(rs.getString("nombre"));
+                    user.setUsuario(rs.getString("usuario"));
+                    user.setContrasena(hashGuardado);
+                    user.setRol(rs.getString("rol"));
+                    user.setEstado(rs.getString("estado"));
+                    return user;
+                }
             }
 
         } catch (Exception e) {

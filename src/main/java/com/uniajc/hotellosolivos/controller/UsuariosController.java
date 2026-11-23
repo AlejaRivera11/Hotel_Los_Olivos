@@ -3,6 +3,7 @@ package com.uniajc.hotellosolivos.controller;
 import com.uniajc.hotellosolivos.dao.UsuarioDAO;
 import com.uniajc.hotellosolivos.model.Usuario;
 
+import com.uniajc.hotellosolivos.util.SeguridadUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -115,7 +116,7 @@ public class UsuariosController {
 
         usuario.setNombre(txtNombre.getText());
         usuario.setUsuario(txtUsuario.getText());
-        usuario.setContrasena(txtContrasena.getText());
+        usuario.setContrasena(SeguridadUtil.hashear(txtContrasena.getText()));
         usuario.setRol(cbRol.getValue());
         usuario.setEstado(cbEstado.getValue());
 
@@ -154,18 +155,15 @@ public class UsuariosController {
 
         if (usuarioSeleccionado == null) {
             mostrarError("Debe seleccionar un usuario.");
-
             return;
         }
 
         if (txtNombre.getText().isBlank()
                 || txtUsuario.getText().isBlank()
-                || txtContrasena.getText().isBlank()
                 || cbRol.getValue() == null
                 || cbEstado.getValue() == null) {
 
             mostrarError("Debe completar todos los campos.");
-
             return;
         }
 
@@ -177,31 +175,29 @@ public class UsuariosController {
         Optional<ButtonType> resultado = alert.showAndWait();
 
         if (resultado.isEmpty() || resultado.get() != ButtonType.OK) {
-
             return;
         }
 
         if (usuarioSeleccionado.getUsuario().equals("admin") && cbEstado.getValue().equals("Inactivo")) {
-
             mostrarError("No es posible desactivar el administrador principal.");
-
             return;
         }
 
         usuarioSeleccionado.setNombre(txtNombre.getText());
         usuarioSeleccionado.setUsuario(txtUsuario.getText());
-        usuarioSeleccionado.setContrasena(txtContrasena.getText());
+
+        if (!txtContrasena.getText().isBlank()) {
+            usuarioSeleccionado.setContrasena(SeguridadUtil.hashear(txtContrasena.getText()));
+        }
+
         usuarioSeleccionado.setRol(cbRol.getValue());
         usuarioSeleccionado.setEstado(cbEstado.getValue());
 
         boolean actualizado = usuarioDAO.actualizarUsuario(usuarioSeleccionado);
 
         if (actualizado) {
-
             mostrarExito("Usuario actualizado correctamente.");
-
             cargarUsuarios();
-
         } else {
             mostrarError("No fue posible actualizar el usuario.");
         }

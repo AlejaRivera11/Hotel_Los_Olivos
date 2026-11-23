@@ -12,8 +12,7 @@ public class HabitacionDAO {
 
     public ArrayList<Habitacion> listarHabitaciones() {
 
-        ArrayList<Habitacion> habitaciones =
-                new ArrayList<>();
+        ArrayList<Habitacion> habitaciones = new ArrayList<>();
 
         String sql = """
                 SELECT *
@@ -23,35 +22,18 @@ public class HabitacionDAO {
 
         try {
 
-            Connection connection =
-                    ConexionBD.getConnection();
-
-            PreparedStatement ps =
-                    connection.prepareStatement(sql);
-
-            ResultSet rs =
-                    ps.executeQuery();
+            Connection connection = ConexionBD.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
 
-                Habitacion habitacion =
-                        new Habitacion();
+                Habitacion habitacion = new Habitacion();
+                habitacion.setHabitacionId(rs.getInt("habitacion_id"));
+                habitacion.setNumero(rs.getInt("numero"));
+                habitacion.setEstado(rs.getString("estado"));
 
-                habitacion.setHabitacionId(
-                        rs.getInt("habitacion_id")
-                );
-
-                habitacion.setNumero(
-                        rs.getInt("numero")
-                );
-
-                habitacion.setEstado(
-                        rs.getString("estado")
-                );
-
-                habitaciones.add(
-                        habitacion
-                );
+                habitaciones.add(habitacion);
             }
 
         } catch (Exception e) {
@@ -63,8 +45,7 @@ public class HabitacionDAO {
         return habitaciones;
     }
 
-    public boolean actualizarEstado(
-            Habitacion habitacion
+    public boolean actualizarEstado(Habitacion habitacion
     ) {
 
         String sql = """
@@ -75,21 +56,10 @@ public class HabitacionDAO {
 
         try {
 
-            Connection connection =
-                    ConexionBD.getConnection();
-
-            PreparedStatement ps =
-                    connection.prepareStatement(sql);
-
-            ps.setString(
-                    1,
-                    habitacion.getEstado()
-            );
-
-            ps.setInt(
-                    2,
-                    habitacion.getHabitacionId()
-            );
+            Connection connection = ConexionBD.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, habitacion.getEstado());
+            ps.setInt(2, habitacion.getHabitacionId());
 
             return ps.executeUpdate() > 0;
 
